@@ -35,12 +35,12 @@ def about():
 def AddEmp():
     emp_id = request.form['emp_id']
     first_name = request.form['first_name']
-    last_name = request.form['last_name']
-    pri_skill = request.form['pri_skill']
-    location = request.form['location']
+    Payscale = request.form['Payscale']
+    Department = request.form['Department']
+    Hire_Date = request.form['Hire_Date']
     emp_image_file = request.files['emp_image_file']
 
-    insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
+    insert_sql = "INSERT INTO test1 VALUES (%s, %s, %s, %s, %s)"                     #CHANGE NAME
     cursor = db_conn.cursor()
 
     if emp_image_file.filename == "":
@@ -48,9 +48,13 @@ def AddEmp():
 
     try:
 
-        cursor.execute(insert_sql, (emp_id, first_name, last_name, pri_skill, location))
+        cursor.execute(insert_sql, (emp_id, first_name, Payscale, Department, Hire_Date))
         db_conn.commit()
-        emp_name = "" + first_name + " " + last_name
+        empl_id = "" + emp_id 
+        emp_name = "" + first_name 
+        emp_Payscale = "" + Payscale 
+        emp_Department = "" + Department 
+        emp_Hire_Date = "" + Hire_Date 
         # Uplaod image file in S3 #
         emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
         s3 = boto3.resource('s3')
@@ -78,8 +82,16 @@ def AddEmp():
         cursor.close()
 
     print("all modification done...")
-    return render_template('AddEmpOutput.html', name=emp_name)
+    return render_template('AddEmpOutput.html', id=empl_id, name=emp_name, Payscale=emp_Payscale, Department=emp_Department, Date=emp_Hire_Date)
 
+
+@app.route("/addemp1", methods=['GET', 'POST'])
+def addemp1():
+    return render_template('AddEmp.html')
+
+@app.route("/getemp", methods=['GET', 'POST'])
+def addemp1():
+    return render_template('GetEmp.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
