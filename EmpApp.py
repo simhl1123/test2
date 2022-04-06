@@ -90,7 +90,7 @@ def addemp1():
     return render_template('AddEmp.html')
 
 @app.route("/getemp", methods=['GET', 'POST'])
-def addemp1():
+def getemp():
     return render_template('GetEmp.html')
 
 if __name__ == '__main__':
